@@ -1,4 +1,4 @@
-# cats and dogs classifier
+# Cats and Dogs Classifier
 In this Machine Learning Model, we are implementing the CNN (Convolutional Neural Network)  to classify dogs and cats images.
 
 ![Python 3.7](https://img.shields.io/badge/python-v3.7-blue)    ![Problem Kaggle](https://img.shields.io/badge/Problem-Vision-blue.svg)     ![Problem Kaggle](https://img.shields.io/badge/Data-Kaggle-orange.svg)
@@ -60,6 +60,11 @@ classifiers_cats_dog_model = keras.Sequential([
     keras.layers.Dropout(0.25),
     keras.layers.Dense(1, activation=nn.sigmoid)
 ])
+
+opt_v = keras.optimizers.Adam(learning_rate=0.01, beta_1=0.9, beta_2=0.999)
+
+classifiers_cats_dog_model.compile(optimizer=opt_v, loss=keras.losses.binary_crossentropy, metrics=["accuracy"])
+
 ```
 
 ## Data preprocessing/Data Augmentation
@@ -102,3 +107,8 @@ validation_data_generated = validation_data_generator.flow_from_directory(valida
                                                                           class_mode="binary", batch_size=256,
                                                                          shuffle=True, seed=42)
 ```
+```
+classifiers_cats_dog_model.compile(optimizer=opt_v, loss=keras.losses.binary_crossentropy, metrics=["accuracy"])
+```
+
+### Prediction of a Single Image
