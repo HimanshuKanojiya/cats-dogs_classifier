@@ -35,6 +35,33 @@ import matplotlib.pyplot as plt
 * Adam as optimizer
 * Binary Cross Entropy as loss function
 
+```
+classifiers_cats_dog_model = keras.Sequential([
+    keras.layers.Conv2D(64, (5,5), padding="same", activation=nn.elu, input_shape=(60,60,3)),
+    keras.layers.BatchNormalization(),
+    keras.layers.MaxPool2D(pool_size=(2,2), strides=2),
+    keras.layers.Dropout(0.25),
+    keras.layers.Conv2D(64, (5,5), padding="same", activation=nn.elu),
+    keras.layers.BatchNormalization(),
+    keras.layers.MaxPool2D(pool_size=(2,2), strides=2),
+    keras.layers.Dropout(0.25),
+    keras.layers.Flatten(),
+    keras.layers.Dense(1000, activation=nn.elu),
+    keras.layers.BatchNormalization(),
+    keras.layers.Dropout(0.25),
+    keras.layers.Dense(750, activation=nn.elu),
+    keras.layers.BatchNormalization(),
+    keras.layers.Dropout(0.25),
+    keras.layers.Dense(500, activation=nn.elu),
+    keras.layers.BatchNormalization(),
+    keras.layers.Dropout(0.25),
+    keras.layers.Dense(250, activation=nn.elu),
+    keras.layers.BatchNormalization(),
+    keras.layers.Dropout(0.25),
+    keras.layers.Dense(1, activation=nn.sigmoid)
+])
+```
+
 ## Data preprocessing/Data Augmentation
 In this process, we load the training and validation data from directory and also apply some augmentation techniques to get the better results during training.
 
@@ -54,3 +81,24 @@ In training data, we have used 31,764 images for two categories:
 In validation data, we have used 12,508 images for two categories:
 * Total cats images: 6,254
 * Total dogs images: 6,254
+
+```
+training_data_generator = keras.preprocessing.image.ImageDataGenerator(rescale=1./255, rotation_range=15, 
+                                                                          width_shift_range=0.15,
+                                                                         height_shift_range=0.15,
+                                                                         zoom_range=0.15,
+                                                                         horizontal_flip=True,
+                                                                         fill_mode="nearest")
+
+validation_data_generator = keras.preprocessing.image.ImageDataGenerator(rescale=1./255)
+
+#training data
+training_data_generated = training_data_generator.flow_from_directory(training_set, target_size=(60,60), 
+                                                                     class_mode="binary", batch_size=256, shuffle=True,
+                                                                     seed=42)
+
+#validation data
+validation_data_generated = validation_data_generator.flow_from_directory(validation_set, target_size=(60,60), 
+                                                                          class_mode="binary", batch_size=256,
+                                                                         shuffle=True, seed=42)
+```
